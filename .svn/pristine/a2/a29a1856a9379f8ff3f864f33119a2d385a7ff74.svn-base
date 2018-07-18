@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>任务详情</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+    <script src="js/font.js"></script>
+    <script src="js/getos.js"></script>
+    <script src="js/api.config.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <nav class="back">
+        <span class="backhistory"  onClick="back()"></span>
+        <div class="title">悬赏详情</div>   
+    </nav>
+    <!-- <div class="taskinfo">
+        <div class="taskinfo-title">
+            <h3>分享悬赏</h3>
+            <p class="projectName">—— 绿城华景川之江明月</p>
+        </div>
+        <div class="tooth">
+            <div class="no-one">
+                <img src="images/no-one.png" alt="">
+                <p>暂无领取</p>
+            </div>
+            <p class="tooth-receive">已领取61    8000元</p>
+            <div class="subTaskInfo">
+                <div class="subTaskInfo-item">
+                    <div class="subTaskInfo-item-avater"><img src="http://placehold.it/80x80" alt=""></div>
+                    <div class="subTaskInfo-item-text">
+                        <p>链家房产张小三</p>
+                        <p>18-03-20</p>
+                    </div>
+                    <div class="subTaskInfo-item-money">100.00元</div>
+                </div>
+                <div class="subTaskInfo-item">
+                    <div class="subTaskInfo-item-avater"><img src="http://placehold.it/80x80" alt=""></div>
+                    <div class="subTaskInfo-item-text">
+                            <p>链家房产张小三</p>
+                            <p>18-03-20</p>
+                    </div>
+                    <div class="subTaskInfo-item-money">100.00元</div>
+                </div>
+                <div class="subTaskInfo-item">
+                        <div class="subTaskInfo-item-avater"><img src="http://placehold.it/80x80" alt=""></div>
+                        <div class="subTaskInfo-item-text">
+                            <p>链家房产张小三</p>
+                            <p>18-03-20</p>
+                        </div>
+                        <div class="subTaskInfo-item-money">100.00元</div>
+                </div>
+                <div class="subTaskInfo-item">
+                        <div class="subTaskInfo-item-avater"><img src="http://placehold.it/80x80" alt=""></div>
+                        <div class="subTaskInfo-item-text">
+                            <p>链家房产张小三</p>
+                            <p>18-03-20</p>
+                        </div>
+                        <div class="subTaskInfo-item-money">100.00元</div>
+                    </div>
+                    <div class="subTaskInfo-item">
+                            <div class="subTaskInfo-item-avater"><img src="http://placehold.it/80x80" alt=""></div>
+                            <div class="subTaskInfo-item-text">
+                                <p>链家房产张小三</p>
+                                <p>18-03-20</p>
+                            </div>
+                            <div class="subTaskInfo-item-money">100.00元</div>
+                        </div>    
+            </div>
+        </div>
+        <div class="taskinfo-footer">
+            <div class="taskinfo-footer-btn">
+                <button>即将开始</button>
+            </div>
+            <div class="taskinfo-footer-name">
+                <span class="ball left"></span>
+                <span class="line"></span>
+                <span class="name">铂金公馆</span>
+                <span class="line"></span>
+                <span class="ball right"></span>
+            </div>
+            <div class="commission-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">12.56 %</div>
+            <div class="company-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">州境宽房产代理有</div>
+            <div class="taskinfo-footer-name rule">
+                <span class="ball left"></span>
+                <span class="line"></span>
+                <span class="name">悬赏规则</span>
+                <span class="line"></span>
+                <span class="ball right"></span>
+            </div>
+            <div class="rule-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">
+                    完成2次分享，分享时间间隔不得少于2个小时
+                    才能完成任务
+                    完成2次分享，分享时间间隔不得少于2个小时
+  才能完成任务
+  完成2次分享，分享时间间隔不得少于2个小时
+  才能完成任务
+            </div>
+            <div class="time-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">结束时间：2018-06-28</div>
+        </div>
+    </div> -->
+    <div class="redpackage">
+            <div class="redpackage-wrapper">
+              <div class="hongbao">
+                          <div class="topcontent" style="border-radius: 10px 10px 50% 50% / 10px 10px 15% 15%;">
+                              <div class="avatar">
+                                  <img src="" alt="" width="80" height="80">
+                                  <span id="close">+</span>
+                              </div>
+                              <h2></h2>
+                              <span class="text">给你发了一个红包</span>
+                              <!-- <div class="description">恭喜发财 大吉大利</div> -->
+                          </div>
+                          <div class="chai " id="chai">
+                              <span>開</span>
+                          </div>
+                      </div>
+            </div>
+    </div>
+    <script>
+          if(getOS()=='ios'){
+        //    ios
+        } 
+        if(getOS()=='android'){
+        // android   
+        $('.back').css('paddingTop',0)
+        }
+        let id=location.href.split("&uuid=")[0].split('id=')[1];
+        var taskinfo;
+        $(document).ready(function(){
+            $.ajax({
+                type:'get',
+                url:URL.taskinfo+"&id="+id,
+                async:false,
+                success:function(response){
+                    console.dir(response)
+                    if(response.code==200){
+                        taskinfo=response.data;
+                        $('.back').after(`
+                        <div class="taskinfo">
+        <div class="taskinfo-title">
+            <h3>${taskinfo.type=='1'?('分享'):('答题')}悬赏</h3>
+            <p class="projectName">—— ${taskinfo.projectName}</p>
+        </div>
+        <div class="tooth">
+            <div class="no-one">
+                <img src="images/no-one.png" alt="">
+                <p>暂无领取</p>
+            </div>
+            <p class="tooth-receive">已领取${taskinfo.subTaskInfo.receiveNum}人  &nbsp  ${taskinfo.subTaskInfo.receivePrice}元</p>
+            <div class="subTaskInfo">
+              
+            </div>
+        </div>
+        <div class="taskinfo-footer">
+            <div class="taskinfo-footer-btn">
+                <button onclick="taskdetailbtn()"></button>
+            </div>
+            <div class="taskinfo-footer-name">
+                <span class="ball left"></span>
+                <span class="line"></span>
+                <span class="name">${taskinfo.projectName}</span>
+                <span class="line"></span>
+                <span class="ball right"></span>
+            </div>
+            <div class="commission-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">${taskinfo.commission}</div>
+            <div class="company-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">${taskinfo.companyName}</div>
+            <div class="taskinfo-footer-name rule">
+                <span class="ball left"></span>
+                <span class="line"></span>
+                <span class="name">悬赏规则</span>
+                <span class="line"></span>
+                <span class="ball right"></span>
+            </div>
+            <div class="rule-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">
+                    ${trans(taskinfo.describe)}
+            </div>
+            <div class="time-icon">
+                <span></span>
+            </div>
+            <div class="commission-number">结束时间：${ taskinfo.endTime}</div>
+        </div>
+    </div>
+                        `)
+                    }else{
+                        alert(response.msg)
+                    }
+                },
+                error:function(error){
+                    
+                }
+            })
+            //console.log(taskinfo)
+            let  receiveUserLen=taskinfo.subTaskInfo.receiveUser.length;
+           
+            let receiveUserArray=taskinfo.subTaskInfo.receiveUser;
+            console.log(receiveUserLen)
+            if(taskinfo.status=='1'){
+                $('.taskinfo-footer-btn').find('button').html('即将开始');
+                $('.taskinfo-footer-btn').find('button').prop('disabled','disabled')
+            }else if(taskinfo.status=='2'){
+                $('.taskinfo-footer-btn').find('button').html('瓜分红包');
+            }else if(taskinfo.status=='3'){
+                if(taskinfo.num=='1'){
+                    $('.taskinfo-footer-btn').find('button').html('做悬赏');
+                }else{
+                   
+                    $('.taskinfo-footer-btn').find('button').html('做悬赏'+taskinfo.doneNum+'/'+taskinfo.num);
+                }
+                
+            }else{
+                $('.taskinfo-footer-btn').find('button').html('已完成');
+                $('.taskinfo-footer-btn').find('button').prop('disabled','disabled')
+            }
+
+            if(receiveUserLen>0){
+                $('.no-one').hide();
+                $('.subTaskInfo').show()
+                for(var i=0;i<receiveUserLen;i++){
+                    if(i==0){
+                        $('.subTaskInfo').append(`
+                <div class="subTaskInfo-item">
+                    <div class="subTaskInfo-item-avater">
+                        <img src="${taskinfo.subTaskInfo.receiveUser[i].portrait}" alt="">  
+                        <span class='crowm1'></span> 
+                    </div>
+                    <div class="subTaskInfo-item-text">
+                        <p class="first">${taskinfo.subTaskInfo.receiveUser[i].realname}</p>
+                        <p >${taskinfo.subTaskInfo.receiveUser[i].settlementTime}</p>
+                    </div>
+                    <div class="subTaskInfo-item-money">${taskinfo.subTaskInfo.receiveUser[i]. price}</div>
+                </div>
+                `)
+                    }else if(i==1){
+                        $('.subTaskInfo').append(`
+                <div class="subTaskInfo-item">
+                    <div class="subTaskInfo-item-avater">
+                        <img src="${taskinfo.subTaskInfo.receiveUser[i].portrait}" alt="">  
+                        <span class='crowm2'></span> 
+                    </div>
+                    <div class="subTaskInfo-item-text">
+                        <p class="first">${taskinfo.subTaskInfo.receiveUser[i].realname}</p>
+                        <p >${taskinfo.subTaskInfo.receiveUser[i].settlementTime}</p>
+                    </div>
+                    <div class="subTaskInfo-item-money">${taskinfo.subTaskInfo.receiveUser[i]. price}</div>
+                </div>
+                `)
+
+                    }else if(i==2){
+                        $('.subTaskInfo').append(`
+                <div class="subTaskInfo-item">
+                    <div class="subTaskInfo-item-avater">
+                        <img src="${taskinfo.subTaskInfo.receiveUser[i].portrait}" alt="">  
+                        <span class='crowm3'></span> 
+                    </div>
+                    <div class="subTaskInfo-item-text">
+                        <p class="first">${taskinfo.subTaskInfo.receiveUser[i].realname}</p>
+                        <p >${taskinfo.subTaskInfo.receiveUser[i].settlementTime}</p>
+                    </div>
+                    <div class="subTaskInfo-item-money">${taskinfo.subTaskInfo.receiveUser[i]. price}</div>
+                </div>
+                `)
+                    }
+              
+                if(i>1){ 
+                break;
+                }
+            } 
+            $('.subTaskInfo').append(`
+                <div class="subTaskInfo-item" style='z-index:10000' onclick='showmorelist()'>
+                    <a class='more' style='z-index:10000'>查看详情</a>
+                </div>
+                `)
+            }else{
+                $('.no-one').show();
+                $('.subTaskInfo').hide()
+            }
+
+        })
+        function trans(obj){
+            return obj.replace(/<.*?>/gi, "").replace(/[ ]|[&nbsp;]/g, "");
+        }
+        // 按钮点击调用的函数    按钮状态判断 1.即将开始 2.瓜分红包3. 0/1 4.已完成
+        function taskdetailbtn(){
+            let ID= location.href.split("&uuid=")[0].split('id=')[1];
+                if(taskinfo.status=='2'){
+                    $.ajax({
+                            method:'get',
+                            url:URL.simpleProjectInfo+'&id='+ID,
+                            success:function(response){
+                                if(response.code==200){
+                                    $('.hongbao').find('h2').text(response.data.name);
+                                    $('.avatar').find('img').attr('src',response.data.url);
+                                    $('.redpackage').show();
+                                    document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                    $('html').css({'height':'100%'})
+                                    $('body').css({'height':'100%','overflow':'hidden'}) 
+                                }else{
+                                    alert(response.msg);
+
+                                }
+                                
+                            },
+                            error:function(msg){
+                                alert(msg.msg)
+                            }
+                        })
+                }
+                else if(taskinfo.status=='3'){
+                    if(taskinfo.type=='1'){//分享
+                        // 跳原生分享
+                        if(getOS()=='ios'){
+                        location.href='share.html?id='+ID;
+                     }
+                        if(getOS()=='android'){
+                            jsBridge.goShare(ID)
+                        }
+                    }else if(taskinfo.type=='2'){//答题，
+                        location.href='taskquestion.html?id='+ID+'&uuid='+uuid
+                    }
+                }
+        }
+         //   拆红包部分代码
+         $('#chai').on('click',function(){
+           $(this).addClass('rotate');
+        //    var id= $('#chai').find('span').attr('id');
+           var proname=$('.avater').find('h2').html()
+           $.ajax({
+               method:'get',
+               async:false,
+               url:URL.taskredpackage+'&id='+id,
+               success:function(response){
+                   //console.dir(response)
+                if(response.code==200){
+                    var data=response.data;
+                    setTimeout(function(){
+                        location.href='redpackageinfo.html?data='+data+'&id'+id+'&uuid='+location.href.split("uuid=")[1].slice(0,36);
+                    },1500)   
+                }else{
+                    alert(response.msg);
+                    ('#chai').removeClass('rotate');
+                    $('.redpackage').hide();
+                    $('body').css('overflow','scroll')
+                }
+               },
+               error:function(error){
+                   alert(error.msg)
+               }
+           })
+       })
+       $('#close').on('click',function(){
+        $('#chai').removeClass('rotate');
+        $('.redpackage').hide();
+        $('body').css('overflow','scroll')
+       })
+       function back(){
+        location.href='index.html?uuid='+uuid;
+       }
+       function showmorelist(){
+           location.href='morelist.html?uuid='+uuid+'&id='+id
+       }
+    </script>
+</body>
+</html>

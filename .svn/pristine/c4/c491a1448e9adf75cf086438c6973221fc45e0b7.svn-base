@@ -1,0 +1,42 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>公告详情</title>
+<script src="js/font.js"></script>
+<script src="js/getos.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/index.css">
+<!-- <link rel="stylesheet" href="http://at.alicdn.com/t/font_606442_ms5qwjsky01cerk9.css"> -->
+</head>
+<body>
+    <!-- <div class="top-title">
+       <div class='left-arrow'>
+           <a href=""><i class="icon-jiantou4 iconfont"></i></a>
+        </div>
+       <div class="top-text">公告消息</div>
+    </div> -->
+    <div class="faq-content-wrapper">
+        <div class="faq-content">
+            <h3>百闻不如一见，经服APP正式上线了</h3>
+            <p class="source"> <span>来源:经服</span> <span class="source-time">发布时间:2018-05-29</span></p>
+            <p>经服于6月1日正式上线，我们犹如每个新生的生命，需要在每位用户的呵护支持下，茁壮成长。</p>
+                <img src="images/score-img.png" alt="" width="100%;" style="margin-top:0.4rem;">
+                <p>经服是全国首个经纪人乐享平台，致力于打造房产经纪人交流圈。伴随着社会对高效的追求，经服—经纪人乐享平台应运而生。</p>
+                <p>线上操作，方便快捷；标准化报备系统，更加专业高效；完善的奖励体系，让工作变被动为主动；资深房产经纪人传授经验，让每一位新手经纪人的成长之路都不孤单。</p>
+        </div>
+    </div>
+    <script>
+      
+            if(getOS()=='ios'){
+            //    ios
+            } 
+            if(getOS()=='android'){
+            // android   
+            document.getElementsByClassName('faq-content')[0].style.marginTop=0;
+            }
+       </script>
+</body>
+</html>

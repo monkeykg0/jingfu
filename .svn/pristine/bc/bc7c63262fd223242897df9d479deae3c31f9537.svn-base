@@ -1,0 +1,16 @@
+  // const BASEURL='http://192.168.0.133:8099';//dev
+// const BASEURL='http://192.168.0.133:9001';//test
+const BASEURL='https://www.jingfuapp.com/preapp'//pre
+// const BASEURL='https://www.jingfuapp.com/proapp'//pro
+var uuid=location.href.split("uuid=")[1].slice(0,36);
+const uuid='7dde8d1c-3048-4049-ba81-2bccd47180de';
+const URL={
+    taskList:BASEURL+'/taskUser/list'+"?uuid="+uuid,
+    taskinfo:BASEURL+'/projectTask/projectTaskInfo'+"?uuid="+uuid,
+    tasksharedetail:BASEURL+'/taskSource/taskSourceInfo'+"?uuid="+uuid,
+    taskquestiondetail:BASEURL+'/taskSource/taskSourceInfo'+"?uuid="+uuid,
+    taskredpackage:BASEURL+'/projectTask/receiveTaskReward'+"?uuid="+uuid,
+    questioncallback:BASEURL+'/projectTask/callback'+"?uuid="+uuid,
+    simpleProjectInfo:BASEURL+'/projectTask/simpleProjectInfo'+"?uuid="+uuid,//获得项目的名称图像
+    rewarddetailed:BASEURL+'/projectTask/reward/detailed'+"?uuid="+uuid,//领取明细
+}

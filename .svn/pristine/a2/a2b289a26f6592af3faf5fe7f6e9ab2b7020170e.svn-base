@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>答题瓜分大奖</title>
+  <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+  <script src="js/font.js"></script>
+  <script src="js/getos.js"></script>
+  <script src="js/api.config.js"></script>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/index.css">
+  <style>
+    body,html{
+            height:calc(100% + 20px)
+            /* overflow: hidden; */
+        }
+  </style>
+</head>
+<body>
+  <nav class="back" style="background: transparent;">
+      <span class="backhistory" onClick="javascript :history.back(-1);" style="background: url('images/leftarrow-white.png') no-repeat center center;background-size: 100% 100%;"></span>
+      <div class="title" style="color: white;">答题瓜分大奖</div>   
+  </nav>
+  <div class="questiondetail">
+    <h3 class="ques-len"></h3>
+    <div class="ques-wrapper">
+      <div class="countdown">15</div>
+      <!-- <div class="ques-item ">
+        <div class="item-name">
+          Q1在置业担保实务中，住房置业担保公司为借款人申请个人住房贷款，与贷款人签订的合同
+        </div>
+        <div class="item-answer on">A保证合同A保证合同A保证合同1111</div>
+        <div class="item-answer">A保证合同</div>
+        <div class="item-answer">A保证合同</div>
+      </div> -->
+      <!-- <div class="ques-item hide">
+          <div class="item-name">
+            Q1在置业担保实务中，住房置业担保公司为借款人申请个人住房贷款，与贷款人签订的合同
+          </div>
+          <div class="item-answer on">A保证合同A保证合同A保证合同1111</div>
+          <div class="item-answer">A保证合同</div>
+          <div class="item-answer">A保证合同</div>
+      </div> -->
+    </div>
+  </div>
+
+
+  <script>
+    if (getOS() == 'ios') {
+      //    ios
+    }
+    if (getOS() == 'android') {
+      // android   
+      document.getElementsByClassName('questiondetail')[0].style.marginTop = 0;
+    }
+    var quesinfo;
+     var ID=location.href.split('&uuid=')[0].split('id=')[1];
+    $(document).ready(function(){
+     
+      $.ajax({
+        method:'get',
+        url:URL.taskquestiondetail+"&id="+ID,
+        async:false,
+        success:function(response){
+          if(response.code==200){
+            quesinfo=response.data;
+          }
+        },
+        error:function(error){
+          alert(error.msg)
+        }
+      })
+      console.log(quesinfo);
+      $('.ques-len').html('共'+quesinfo.question.length+'题')
+      console.log(quesinfo.question[0])
+      for(let i=0;i<quesinfo.question.length;i++){
+          let qn='q'+i
+          let answer=quesinfo.question[i].answer.split(" ");//问题答案数组;
+          let rightanswer=quesinfo.question[i].correctAnswer=='A' ? '1':(quesinfo.question[i].correctAnswer=='B' ? '2' :'3');
+          let score=quesinfo.question[i].source;
+       $('.countdown').after(`
+        <div class="ques-item ${qn}">
+        <div class="item-name">
+            ${quesinfo.question[i].name}
+        </div>
+        <button class="item-answer " onclick='chooseAnswer(this,${rightanswer},${i},${score})'>${ answer[0]}</button>
+        <button class="item-answer" onclick='chooseAnswer(this,${rightanswer},${i},${score})'>${ answer[1]}</button>
+        <button class="item-answer" onclick='chooseAnswer(this,${rightanswer},${i},${score})'>${ answer[2]}</button>
+      </div>
+        `)
+      }
+    })
+      // 倒计时
+      let countdown=15;
+      // 问题下标
+      let quesindex=0;
+      // 是否已选
+      let areadyclick=false;
+      // 传到下个页面，答对几道，错题，得分
+      let rightaws=0;
+      let wrongaws=[];
+      let scores=0;
+      let s1=setInterval(function(){
+        countdown--;
+        $('.countdown').html(countdown)
+        if(countdown<=0 || areadyclick){//下一题
+          if(countdown<=0){
+
+          }
+          quesindex++;
+          areadyclick=false;
+
+          for(var i=0;i<$('.ques-item ').length;i++){
+            
+            $('.q'+i).hide();
+          }
+          $('.q'+quesindex).show();
+          countdown=16;
+          if(quesindex>=$('.ques-item').length){
+            clearInterval(s1)
+            // ('答题结束'),检查未答题目
+              for( let i=0;i<$('.ques-item').length;i++){
+                if( !($($('.ques-item')[i]).find('.item-answer').hasClass('on'))){
+                  wrongaws.push(i+1)
+                }
+              }
+              console.log( wrongaws)//去重
+              wrongaws=[...new Set(wrongaws)];
+            location.href='score.html?uuid='+location.href.split("uuid=")[1].slice(0,36)+'?rightaws'+rightaws+'&wrongaws'+wrongaws.join('')+'&scores'+scores+'&id'+ID
+          }
+        }
+       },1000)
+    // 选题
+       function chooseAnswer(obj,RT,I,SCORE){//RT:正确选项。I题号
+        $(obj).prop('disabled','disabled')
+        areadyclick=true;
+        //  单选
+        if($(obj).hasClass('on')){
+          $(obj).removeClass('on')
+        }else{
+           $(obj).addClass('on');
+           $(obj).siblings().removeClass('on');
+        }
+        //console.log($(obj).index())
+        if($(obj).index()==RT){//答对，
+          rightaws++;//答对题数目+1
+          scores+=parseInt(SCORE)
+        }else{
+          let wrong=parseInt(I)+1;
+          wrongaws.push(wrong)
+        }
+       }
+   
+
+
+
+
+  </script>
+</body>
+
+</html>

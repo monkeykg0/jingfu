@@ -1,0 +1,576 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>悬赏榜</title>
+<script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script src="js/font.js"></script>
+<script src="js/getos.js"></script>
+<script src="js/api.config.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/index.css">
+<style>
+   body,html{
+       /* height:100%; */
+   }
+</style>
+</head>
+<body>
+    <nav class="back">
+        <span class="backhistory" onclick="back()"></span>
+        <div class="title">悬赏榜</div>   
+    </nav>
+    <div class="tasklist">
+        <div class="list">
+            <div class="notask">
+                <img src="images/notask.png" alt="">
+                <p class="tips">你所在的城市暂无悬赏，耐心等待</p>
+            </div>
+            <div class="hastask">
+                <div class="banner"></div>
+                <div class="item">
+                    <!-- <div class="item-wrapper">
+                        <div class="avater">
+                            <img src="images/xs_banner.png">
+                        </div>
+                        <div class="text">
+                            <p class="text-name">分享铂金公馆宣传视频 分享铂金公馆宣传视频</p>
+                            <p class="text-describe">           分享到微信朋友圈即可瓜分大
+                                    奖，分享越多成交越多，轻松赚佣金</p>
+                        </div>
+                        <div class="status">
+                            <p class="status-title">最高已领<b>30</b>元</p>
+                            <button>0/2</button>
+                        </div>
+                    </div> -->
+                </div>
+                <p class='no-data'>无更多数据</p>
+            </div>
+        </div>
+    </div>
+    <div class="redpackage">
+            <div class="redpackage-wrapper">
+              <div class="hongbao">
+                          <div class="topcontent" style="border-radius: 10px 10px 50% 50% / 10px 10px 15% 15%;">
+                              <div class="avatar">
+                                  <img src="" alt="" width="80" height="80">
+                                  <span id="close">+</span>
+                              </div>
+                              <h2></h2>
+                              <span class="text">给你发了一个红包</span>
+                              <!-- <div class="description">恭喜发财 大吉大利</div> -->
+                          </div>
+                          <div class="chai" id="chai">
+                              <span>開</span>
+                          </div>
+                      </div>
+            </div>
+    </div>
+    <script>
+        var listinfo;
+        var indexid;
+        function back(){
+            if(getOS()=='ios'){
+                window.webkit.messageHandlers.black.postMessage('1');
+            }
+            if(getOS()=='android'){
+                jsBridge.back();
+            }
+        }
+        if(getOS()=='ios'){
+        //    ios
+            
+        } 
+        if(getOS()=='android'){
+        // android   
+        $('.back').css('paddingTop',0)
+        }
+
+        $(document).ready(function(){
+            let current='&current=1';
+            let size='&size=10';
+            $.ajax({
+                type:'get',
+                async:false,
+                url:URL.taskList+current+size,
+                success:function(response){
+                    console.dir(response)
+                    if(response.code==200){
+                        listinfo=response.data
+                        //console.log(listinfo);   
+                    }else if(response.code==401){
+                        //跳转到原生的登陆页面
+                        alert(response.msg)
+                        if(getOS()=='ios'){
+                            //    ios
+                            login('401');
+                            } 
+                            if(getOS()=='android'){
+                            // android   
+                                
+                            }
+                    }else{
+                        alert(response.msg)
+                    }
+                    
+                },
+                error:function(error){
+                   
+                }
+            })
+            
+            if(listinfo.rows<=0){//无任务列表
+                $('.notask').show();
+               $('.hastask').hide();
+            }else{//有任务列表
+                $('.notask').hide();
+               $('.hastask').show();
+               for(let i=0;i<listinfo.rows.length;i++){
+                //    任务id
+                 let id=listinfo.rows[i].id;
+                //    let avater=listinfo.rows[i].avater
+                // 任务类型 1.分享2.答题3.上客4.成交5.招募
+                let type=listinfo.rows[i].type;
+                // 任务状态 1.即将开始 2.瓜分红包 3. 0/1 4:到点结算：已完成，未领红包 
+                //5.进行中，没有人做6.已完成7.到点结算：进行中
+                let status=listinfo.rows[i].status;
+                // 新任务 0.否 1.是
+                let newTask=listinfo.rows[i].newTask;
+                var statusTitle='';
+                var btnContent='';
+
+                if(status=='1'){//即将开始
+                    statusTitle='新任务';
+                    btnContent='即将开始';
+                }else if(status=='2'){
+                    statusTitle='最高已领'+'<b>'+listinfo.rows[i]. receiveMax+'</b>'+'元';
+                    btnContent='领赏金'
+                }else if(status=='3'){
+                    statusTitle='最高已领'+'<b>'+ listinfo.rows[i]. receiveMax+'</b>'+'元';
+                    if(listinfo.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+listinfo.rows[i].doneNum+'/'+listinfo.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }  
+                }else if(status=='4'){
+                    let endtime=listinfo.rows[i].endTime.replace(/-/g,"/");
+                    let time=parseInt((new Date(endtime)).getTime())-parseInt((new Date()).getTime());
+                    let day=parseInt( time/ (1000 * 60 * 60 * 24));
+                    let hour=parseInt((time- day*24*60*60*1000)/(1000*60*60));
+                    let min=parseInt((time-day*24*60*60*1000-hour*60*60*1000)/(1000*60));
+                    if(day>0){
+                        statusTitle=day+"天"+hour+"时"+min+"分";
+                    }else{
+                        if(hour>0){
+                            statusTitle=0+"天"+hour+"时"+min+"分";
+                        }else{
+                            statusTitle=0+"天"+0+"时"+min+"分";
+                        }
+                    }
+
+                    btnContent='领赏金';
+                }else if(status=='5'){
+                    statusTitle='新任务';
+                    if(listinfo.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+listinfo.rows[i].doneNum+'/'+listinfo.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                    
+                }else if(status=='6'){
+                    statusTitle='最高已领'+'<b>'+(listinfo.rows[i]. receiveMax)+'</b>'+'元';
+                    btnContent='已完成';
+                }else if(status=='7'){
+                    statusTitle='已完成'+(listinfo.rows[i]. receiveMax)+'人' ;
+                    if(listinfo.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+listinfo.rows[i].doneNum+'/'+listinfo.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                }else{
+                    statusTitle='新任务' ;
+                    if(listinfo.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+listinfo.rows[i].doneNum+'/'+listinfo.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                }
+                //拆红包
+              
+                $('.item').append(`
+               <div class="item-wrapper">
+                        <div class="avater" onclick="location.href='taskdetail.html?id=${id}&uuid=${uuid}'">
+                            <img src="${(type=='1') ? ('images/shareicon.png') :((type=='2') ? ('images/questionicon.png') :'images/rankicon.png')  }">
+                            <span class="text-name">${listinfo.rows[i].name}</span>
+                        </div>
+                        <div class="text" onclick="location.href='taskdetail.html?id=${id}&uuid=${uuid}'">
+                            <p class="text-describe"> ${trans(listinfo.rows[i].describe)} </p>
+                        </div>
+                        <div class="status">
+                            <p class="status-title">${statusTitle}</p>
+                            <button onclick="btnjump('${id}','${type}','${uuid}','${status}','${listinfo.rows[i].name}')">${btnContent}</button>
+                        </div>
+                    </div>
+               `)
+               }
+            }
+        });
+        function trans(obj){
+            return obj.replace(/<.*?>/gi, "").replace(/[ ]|[&nbsp;]/g, "");
+        }
+       function btnjump(ID,TYPE,UUID,STATUS,NAME){
+         
+           if(TYPE=='1'){//分享
+            // 任务状态 1.即将开始 2.瓜分红包 3. 0/1 4:到点结算：已完成，未领红包 
+            //5.进行中，没有人做6.已完成7.到点结算：进行中
+                if(STATUS=='1'){
+                    return false;
+                }else if(STATUS=='2'){
+                    //瓜分红包逻辑
+                     $.ajax({
+                            method:'get',
+                            async:false,
+                            url:URL.simpleProjectInfo+'&id='+ID,
+                            success:function(response){
+                                if(response.code==200){
+                                    indexid=ID;
+                                     $('.hongbao').find('h2').text(response.data.name);
+                                $('.avatar').find('img').attr('src',response.data.url);
+                                $('.redpackage').show();
+                                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                $('html').css({'height':'100%'})
+                                $('body').css({'height':'100%','overflow':'hidden'})
+                                }else{
+                                    alert(response.msg)
+                                }
+                               
+                            },
+                            error:function(error){
+                                alert(error.msg)
+                            }
+                        }) 
+                }else if(STATUS=='3'){
+                    if(checkUserTask(ID)){
+                        if(getOS()=='ios'){
+                        location.href='share.html?id='+ID;
+                     }
+                     if(getOS()=='android'){
+                        window.jsBridge.goShare(ID);
+                     }
+                    }
+                    
+                }else if(STATUS=='4'){
+                    return false;
+                }else if(STATUS=='5'){
+                    if(checkUserTask(ID)){
+                         if(getOS()=='ios'){
+                        location.href='share.html?id='+ID;
+                     }
+                     if(getOS()=='android'){
+                        window.jsBridge.goShare(ID);
+                     }
+                    }
+                   
+                }else if(STATUS=='6'){
+                    return false;
+                }else{
+                    if(checkUserTask(ID)){
+                        if(getOS()=='ios'){
+                        location.href='share.html?id='+ID;
+                     }
+                     if(getOS()=='android'){
+                        window.jsBridge.goShare(ID);
+                     }
+                    }
+                }
+            //  location.href=share+ID;
+           }else if(TYPE=='2'){//答题，跳H5
+                // 任务状态 1.即将开始 2.瓜分红包 3. 0/1 4:到点结算：已完成，未领红包 
+            //5.进行中，没有人做6.已完成7.到点结算：进行中
+                if(STATUS=='1'){
+                        return false;
+                    }else if(STATUS=='2'){//瓜分红包
+                        $.ajax({
+                            method:'get',
+                            async:false,
+                            url:URL.simpleProjectInfo+'&id='+ID,
+                            success:function(response){
+                                indexid=ID
+                                $('.hongbao').find('h2').text(response.data.name);
+                                $('.avatar').find('img').attr('src',response.data.url)
+                                $('#chai').find('span').attr('id',ID)
+                                $('.redpackage').show();
+                                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                // $('html').css({'height':'100%'+20})
+                                // $('body').css({'height':'100%'+20,'overflow':'hidden'})
+                            },
+                            error:function(msg){
+                                alert(msg.msg)
+                            }
+                        })
+                       
+                       
+                    }else if(STATUS=='3'){
+                        if(checkUserTask(ID)){
+                            location.href='taskquestion.html?id='+ID+'&uuid='+UUID
+                        }
+                        
+                    }else if(STATUS=='4'){
+                        return false;
+                    }else if(STATUS=='5'){
+                        if(checkUserTask(ID)){
+                            location.href='taskquestion.html?id='+ID+'&uuid='+UUID
+                        }
+                    }else if(STATUS=='6'){
+                        return false;
+                    }else{
+                        if(checkUserTask(ID)){
+                            location.href='taskquestion.html?id='+ID+'&uuid='+UUID
+                        }
+                    }
+           }
+       }
+    //   拆红包部分代码
+       $('#chai').on('click',function(){
+           $(this).addClass('rotate');
+           var id= indexid;
+           var proname=$('.avater').find('h2').html()
+           $.ajax({
+               method:'get',
+              async:false,
+               url:URL.taskredpackage+'&id='+id,
+               success:function(response){
+                //    console.dir(response)
+                if(response.code==200){
+                    var data=response.data;
+                    setTimeout(function(){
+                        location.href='redpackageinfo.html?data='+data+'&id'+id+'&uuid='+uuid;
+                    },1500)
+                    
+                }else{
+                    alert(response.msg);
+                    $('.redpackage').hide();
+                    $('body').css('overflow','scroll')
+                }
+               },
+               error:function(msg){
+                   alert(msg.msg)
+               }
+           })
+       })
+       $('#close').on('click',function(){
+        ('#chai').removeClass('rotate');
+        $('.redpackage').hide();
+        $('body').css('overflow','scroll')
+       })
+    //   滚动到页面的底部，加载更多数据
+    //监听页面滚动事件
+    let addcurrent=1;
+    window.onscroll = function(e){
+        scrollFunc();
+        if(scrollDirection == 'down'){
+            //页面向下滚动要做的事情
+            let offsetHeight=$('body').get(0).offsetHeight;
+            // 滚动了getScrollTop()高度
+         // console.log('总高度：'+offsetHeight, '可滚动的高度：'+ (offsetHeight-getClientHeight()-getScrollTop()),'滚动了：'+getScrollTop(),'适口：'+getClientHeight());
+            if(offsetHeight-getClientHeight()-getScrollTop()<=0){//小于0时候加载新的数据
+
+            addcurrent++;
+            var current='&current='+addcurrent;
+            var size='&size=10';
+            $.ajax({
+                type:'get',
+                async:false,
+                url:URL.taskList+current+size,
+                success:function(response){
+                    if(response.code==200 && response.data.rows.length>0){
+                        for( var i=0;i<response.data.rows.length;i++){
+                            //    任务id
+                 let id=response.data.rows[i].id;
+                //    let avater=response.data.rows[i].avater
+                // 任务类型 1.分享2.答题3.上客4.成交5.招募
+                let type=response.data.rows[i].type;
+                // 任务状态 1.即将开始 2.瓜分红包 3. 0/1 4:到点结算：已完成，未领红包 
+                //5.进行中，没有人做6.已完成7.到点结算：进行中
+                let status=response.data.rows[i].status;
+                // 新任务 0.否 1.是
+                let newTask=response.data.rows[i].newTask;
+                var statusTitle='';
+                var btnContent='';
+
+                if(status=='1'){//即将开始
+                    statusTitle='新任务';
+                    btnContent='即将开始';
+                }else if(status=='2'){
+                    statusTitle='最高已领'+'<b>'+response.data.rows[i]. receiveMax+'</b>'+'元';
+                    btnContent='领赏金'
+                }else if(status=='3'){
+                    statusTitle='最高已领'+'<b>'+response.data.rows[i]. receiveMax+'</b>'+'元';
+                    if(response.data.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+response.data.rows[i].doneNum+'/'+response.data.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                    
+                }else if(status=='4'){
+                    let time=parseInt((new Date(response.data.rows[i].endTime)).getTime())-parseInt((new Date()).getTime());
+                    let day=parseInt( time/ (1000 * 60 * 60 * 24));
+                    let hour=parseInt((time- day*24*60*60*1000)/(1000*60*60));
+                    let min=parseInt((time-day*24*60*60*1000-hour*60*60*1000)/(1000*60));
+                    if(day>0){
+                        statusTitle=day+"天"+hour+"时"+min+"分";
+                    }else{
+                        if(hour>0){
+                            statusTitle=0+"天"+hour+"时"+min+"分";
+                        }else{
+                            statusTitle=0+"天"+0+"时"+min+"分";
+                        }
+                    }
+                    // statusTitle=day>=0 ? (day+"天"+hour+"时"+min+"分") : (hour+"时"+min+"分")
+                    btnContent='已完成';
+                }else if(status=='5'){
+                    statusTitle='新任务';
+                    if(response.data.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+response.data.rows[i].doneNum+'/'+response.data.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                }else if(status=='6'){
+                    statusTitle='最高已领'+'<b>'+(response.data.rows[i]. receiveMax)+'</b>'+'元';
+                    btnContent='已完成';
+                }else if(status=='7'){
+                    statusTitle='已完成'+'<b>'+(response.data.rows[i]. receiveMax)+'</b>'+'人' ;
+                    if(response.data.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+response.data.rows[i].doneNum+'/'+response.data.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                }else{
+                    statusTitle='新任务' ;
+                    if(response.data.rows[i].num>1){
+                        btnContent='做悬赏'+'<b>'+response.data.rows[i].doneNum+'/'+response.data.rows[i].num+'</b>';
+                    }else{
+                        btnContent='做悬赏';
+                    }
+                }
+
+                            $('.item').append(`
+                            <div class="item-wrapper">
+                        <div class="avater" onclick="location.href='taskdetail.html?id=${response.data.rows[i].id}&uuid=${uuid}'">
+                            <img src="${(type=='1') ? ('images/shareicon.png') :((type=='2') ? ('images/questionicon.png') :'images/rankicon.png')  }">
+                            <span class="text-name">${response.data.rows[i].name}</span>
+                        </div>
+                        <div class="text" onclick="location.href='taskdetail.html?id=${response.data.rows[i].id}&uuid=${uuid}'">
+                            <p class="text-describe"> ${trans(response.data.rows[i].describe)} </p>
+                        </div>
+                        <div class="status">
+                            <p class="status-title">${statusTitle}</p>
+                            <button onclick="btnjump('${id}','${type}','${uuid}','${status}','${response.data.rows[i].name}')">${btnContent}</button>
+                        </div>
+                    </div>
+               `)
+                        }
+                        
+                    }else{//没有更多数据
+                        $('.no-data').animate({opacity:1},1000,function(){
+                            $('.no-data').animate({opacity:0},500)
+                        })
+                    }
+                },
+                error:function(msg){
+                   alert(msg.msg)
+                }
+            })
+
+
+            }
+        }
+        else if(scrollDirection =='up'){
+            //页面向上滚动要做的事情
+        }
+    }
+
+
+var scrollAction = {x: 'undefined', y: 'undefined'}, scrollDirection;
+function scrollFunc() {
+    if (typeof scrollAction.x == 'undefined') {
+        scrollAction.x = window.pageXOffset;
+        scrollAction.y = window.pageYOffset;
+    }
+    var diffX = scrollAction.x - window.pageXOffset;
+    var diffY = scrollAction.y - window.pageYOffset;
+    if (diffX < 0) {
+        // Scroll right
+        scrollDirection = 'right';
+    } else if (diffX > 0) {
+        // Scroll left
+        scrollDirection = 'left';
+    } else if (diffY < 0) {
+        // Scroll down
+        scrollDirection = 'down';
+    } else if (diffY > 0) {
+        // Scroll up
+        scrollDirection = 'up';
+    } else {
+        // First scroll event
+    }
+    scrollAction.x = window.pageXOffset;
+    scrollAction.y = window.pageYOffset;
+}
+//获取页面视口高度
+function getClientHeight()
+{
+  var clientHeight=0;
+  if(document.body.clientHeight&&document.documentElement.clientHeight)
+  {
+  var clientHeight = (document.body.clientHeight<document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+  }
+  else
+  {
+  var clientHeight = (document.body.clientHeight>document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+  }
+  return clientHeight;
+}
+// * 取窗口滚动条高度 
+
+function getScrollTop()
+{
+    var scrollTop=0;
+    if(document.documentElement&&document.documentElement.scrollTop)
+    {
+        scrollTop=document.documentElement.scrollTop;
+    }
+    else if(document.body)
+    {
+        scrollTop=document.body.scrollTop;
+    }
+    return scrollTop;
+}
+
+//判断点按钮是否可以做任务
+    function checkUserTask(taskid){
+        var flag = false;
+      
+        $.ajax({
+            method:'get',
+            url:URL.checkUserTask,
+            async:false,
+            data:{'id':taskid},
+            success:(response)=>{
+                console.dir(response)
+                if(response.code==200 && (response.data==1)){
+                    flag = true;
+                }else{
+                    alert(response.msg);
+                    flag = false;
+                }
+            }
+        });
+        return flag;
+    }
+
+   </script>
+</body>
+</html>

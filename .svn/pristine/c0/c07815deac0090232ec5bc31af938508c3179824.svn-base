@@ -1,0 +1,40 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>常见问题</title>
+<script src="js/font.js"></script>
+<script src="js/getos.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_606442_ms5qwjsky01cerk9.css">
+</head>
+<body>
+    <!-- <div class="top-title">
+       <div class='left-arrow'><a href=""><i class="icon-jiantou4 iconfont"></i></a></i></div>
+       <div class="top-text">常见问题</div>
+    </div> -->
+    <div class="faq-content-wrapper">
+        <div class="faq-content">
+            <h3>我报备客户，系统提醒我可能无法结算佣金是什么意思？</h3>
+            <p>总代公司委托经纪公司导入客户，成交后结算佣金，经服APP提供了便捷的线上平台。当系统识别到您所在的经纪公司没有同该项目的总代缔结合作时，就会给出这个提示。
+                <br/>您可以立即联系您的店长，同总代公司取得联系，确保佣金的正常结算。
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+      
+        if(getOS()=='ios'){
+        //    ios
+        } 
+        if(getOS()=='android'){
+        // android   
+        document.getElementsByClassName('faq-content')[0].style.marginTop=0;
+        }
+   </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>常见问题</title>
+<script src="js/font.js"></script>
+<script src="js/getos.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_606442_ms5qwjsky01cerk9.css">
+</head>
+<body>
+    <!-- <div class="top-title">
+       <div class='left-arrow'><a href=""><i class="icon-jiantou4 iconfont"></i></a></i></div>
+       <div class="top-text">常见问题</div>
+    </div> -->
+    <div class="faq-content-wrapper">
+        <div class="faq-content">
+            <h3>报备有效期和上客保护期是什么？</h3>
+            <p>报备有效期和上客保护期均由总代公司按项目制定。报备有效期是指在有效期内上客视作有效，逾期需要重新报备，报备有效期内别家经纪人也可以正常报备、上客。
+                <br>上客保护期是指保护期内，无论客户是自行到访还是跟随其他经纪公司的经纪人到访，均归属受保护的经纪公司。
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+      
+        if(getOS()=='ios'){
+        //    ios
+        } 
+        if(getOS()=='android'){
+        // android  
+        document.getElementsByClassName('faq-content')[0].style.marginTop=0; 
+        }
+   </script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>瓜分奖金</title>
+    <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+    <script src="js/font.js"></script>
+    <script src="js/getos.js"></script>
+    <script src="js/api.config.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<style>
+    body{
+        height:100%;
+        overflow: hidden;
+    }
+</style>
+<body>
+    <nav class="back" style="background:#D95940;">
+        <a class="backhistory" onclick="backindex()" ></a>
+        <div class="title" style="color:#FFE2B1;">瓜分奖金</div>   
+    </nav>
+    <div class="redpackageinfo-wrapper" >
+        <div class="redpackageinfo"></div>
+        <div class="Reward-info">
+            <h3 class="Reward-info-name"></h3> 
+            <h2 class='Reward-info-money'><b class="money"></b>元</h2>   
+            <h3 class="gogetmoney"><a href="">已存入我的奖金，可直接提现</a></h3>
+        </div>
+    </div>
+    <div class="reward-detailed">
+        <p class='received'></p>
+        <div class="received-persons">
+            <!-- <div class="received-persons-item">
+                <div class="item-avater">
+                    <img src="" alt="" >
+                </div>
+                <div class="iten-text">
+                    <div class="realname">链家房产张小三</div>
+                    <div class=" settlementTime">18-03-20</div>
+                </div>
+                <div class="item-money">100.00元</div>
+            </div>
+            <div class="received-persons-item">
+                    <div class="item-avater">
+                        <img src="" alt="" >
+                    </div>
+                    <div class="iten-text">
+                        <div class="realname">链家房产张小三</div>
+                        <div class=" settlementTime">18-03-20</div>
+                    </div>
+                    <div class="item-money">100.00元</div>
+            </div> -->
+            <!-- <div class="received-persons-item">
+                    <div class="item-avater">
+                        <img src="" alt="" >
+                    </div>
+                    <div class="iten-text">
+                        <div class="realname">链家房产张小三</div>
+                        <div class=" settlementTime">18-03-20</div>
+                    </div>
+                    <div class="item-money">100.00元</div>
+            </div>
+            <div class="received-persons-item">
+                    <div class="item-avater">
+                        <img src="" alt="" >
+                    </div>
+                    <div class="iten-text">
+                        <div class="realname">链家房产张小三</div>
+                        <div class=" settlementTime">18-03-20</div>
+                    </div>
+                    <div class="item-money">100.00元</div>
+            </div> -->
+        </div>
+    </div>
+  <script>
+      if(getOS()=='ios'){
+        //    ios
+        } 
+        if(getOS()=='android'){
+        // android   
+        document.getElementsByClassName('redpackageinfo-wrapper')[0].style.marginTop=0;
+        }
+       
+        var id=location.href.split('&id')[1].split('&uuid')[0];
+        var data=location.href.split('?data=')[1].split('&id')[0];
+        var current=1;
+        $('.money').html(data);
+        $(document).ready(function(){
+            getproinfo();
+            getlistinfo();
+        })
+        function getproinfo(){
+             $.ajax({//获取项目的名称
+            type:'get',
+            async:false,
+            url:URL.simpleProjectInfo+'&id='+id,
+            success:function(response){
+                if(response.code==200){
+                    $('.Reward-info-name').html(response.data.name);
+                }else{
+                    alert(response.msg)
+                }
+            },
+            serror:function(msg){
+                alert(msg.msg)
+            }
+        })
+        }
+       function getlistinfo(){
+        $.ajax({
+            type:'get',
+            async:false,
+            url:URL.rewarddetailed+'&id='+id+'&size=4'+'&current='+current,
+            success:function(response){
+                console.dir(response)
+                if(response.code==200){ 
+                   if(response.data.receiveUser.length>0){ //如果有用户完成
+                        $('.received').html(`已领取${response.data.receiveNum}人,共${ response.data.receivePrice}元`)
+                        for(let i=0;i<response.data.receiveUser.length;i++){
+                            $('.received-persons').append(`<div class="received-persons-item">
+                    <div class="item-avater">
+                        <img src="${response.data.receiveUser[i].portrait}" alt="" >
+                    </div>
+                    <div class="iten-text">
+                        <div class="realname">${response.data.receiveUser[i].realname}</div>
+                        <div class=" settlementTime">${response.data.receiveUser[i].settlementTime}</div>
+                    </div>
+                    <div class="item-money">${response.data.receiveUser[i]. price}</div>
+            </div>`)
+                        }
+  
+                  }else{//没有用户完成
+                    $('.received-persons').append(`  <div class="received-persons-item">暂无人员完成</div>`)
+                   }
+                }else{
+                    alert(response.msg)
+                }
+                
+            }
+        })
+       }
+        // 获取领取列表
+        
+        //领取列表上拉加载更多
+        $('.received-persons').on('scroll',function(){
+            var clientHeight= $('.received-persons').get(0).clientHeight;
+            let offsetHeight=$('.received-persons').get(0).offsetHeight;
+            let scrollTop=$('.received-persons').get(0).scrollTop;//滚动的距离
+             let HEIGHT=$('.received-persons').height()
+            console.log(clientHeight,offsetHeight,scrollTop,HEIGHT)
+             if(clientHeight-scrollTop-HEIGHT>=20){
+                //  加载更多的列表
+                current++;
+                $.ajax({
+                    method:'get',
+                    async:false,
+                    url:URL.rewarddetailed+'&id='+id+'&size=4'+'&current='+current,
+                    success:function(response){
+                        if(response.code==200 && response.data.receiveUser.length>0){
+                            for(let i=0;i<response.data.receiveUser.length;i++){
+                            $('.received-persons').append(`
+                            <div class="received-persons-item">
+                                <div class="item-avater">
+                                    <img src="${response.data.receiveUser[i].portrait}" alt="" >
+                                </div>
+                                <div class="iten-text">
+                                    <div class="realname">${response.data.receiveUser[i].realname}</div>
+                                    <div class=" settlementTime">${response.data.receiveUser[i].settlementTime}</div>
+                                </div>
+                                <div class="item-money">${response.data.receiveUser[i]. price}</div>
+                            </div>`)
+                            }
+                        }
+                    }
+                }) 
+             }
+        })
+        
+      
+      
+  
+
+
+var scrollAction = {x: 'undefined', y: 'undefined'}, scrollDirection;
+function scrollFunc() {
+    if (typeof scrollAction.x == 'undefined') {
+        scrollAction.x = window.pageXOffset;
+        scrollAction.y = window.pageYOffset;
+    }
+    var diffX = scrollAction.x - window.pageXOffset;
+    var diffY = scrollAction.y - window.pageYOffset;
+    if (diffX < 0) {
+        // Scroll right
+        scrollDirection = 'right';
+    } else if (diffX > 0) {
+        // Scroll left
+        scrollDirection = 'left';
+    } else if (diffY < 0) {
+        // Scroll down
+        scrollDirection = 'down';
+    } else if (diffY > 0) {
+        // Scroll up
+        scrollDirection = 'up';
+    } else {
+        // First scroll event
+    }
+    scrollAction.x = window.pageXOffset;
+    scrollAction.y = window.pageYOffset;
+}
+//获取页面视口高度
+function getClientHeight()
+{
+  var clientHeight=0;
+  if(document.body.clientHeight&&document.documentElement.clientHeight)
+  {
+  var clientHeight = (document.body.clientHeight<document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+  }
+  else
+  {
+  var clientHeight = (document.body.clientHeight>document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+  }
+  return clientHeight;
+}
+// * 取窗口滚动条高度 
+
+function getScrollTop()
+{
+    var scrollTop=0;
+    if(document.documentElement&&document.documentElement.scrollTop)
+    {
+        scrollTop=document.documentElement.scrollTop;
+    }
+    else if(document.body)
+    {
+        scrollTop=document.body.scrollTop;
+    }
+    return scrollTop;
+}
+       function backindex(){
+        location.href='index.html?uuid='+uuid;
+       }
+   </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!doctype HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<meta content="telephone=no" name="format-detection" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+<title>楼盘分享</title>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="js/font.js"></script>
+<script src="js/getos.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+<link rel="stylesheet" href="css/projectdetail.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+ <!-- 高德地图-->
+ <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+ <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+ <script src="https://webapi.amap.com/maps?v=1.4.6&key=4cb29f33eab23d4f83b53e0f8db0b7c0"></script>
+ <script>
+  
+
+// window.onload = function() {
+// 	mapObj.plugin(["AMap.ToolBar"], function() {
+// 		map.addControl(new AMap.ToolBar());
+// 	});
+// 	if(location.href.indexOf('&guide=1')!==-1){
+// 		map.setStatus({scrollWheel:false})
+// 	}
+// }
+ 
+ </script>
+</head>
+<style>
+</style>
+<body>
+    <!-- <div class="top-title-pro">
+        楼盘分享
+    </div> -->
+    <!-- banner -->
+    <!-- <div class='pro-banner'>
+        <img src="https://placehold.it/80x80" alt="">
+    </div>
+    <div class='pro-desc'>
+        <div class="pro-desc-title">
+            <div class='pro-desc-title-name'>玉屏山庄A座</div>
+            <div class="averagePrice">均价：55800/平</div>
+        </div>
+        <div class="pro-desc-tage">
+            <span>商铺</span>
+            <span>精装修</span>
+            <span>带看奖</span>
+            <span>商铺</span>
+            <span>精装修</span>
+            <span>带看奖</span>
+            <span>商铺</span>
+            <span>精装修</span>
+            <span>带看奖</span>
+        </div>
+        <div class="totalcount">
+            总价：558万元
+        </div>
+        <div class="pro-desc-address">
+            <span class="pro-desc-address-left">地址:</span>
+            <span class="pro-desc-address-right">杭州市西湖区教工路18号</span>
+        </div>
+        <div class="pro-desc-address last">
+            <span class="pro-desc-address-left">电话:</span>
+            <span class="pro-desc-address-right">雪玲 12345678910</span>
+        </div>
+    </div> -->
+    <!-- 楼盘动态-->
+    <!-- <div class="project-dynamic">
+        <h3 class="dynamic-title">楼盘动态</h3>
+        <div class="dynamic-detail">玉屏山庄案场在售酒店式公寓，小户型建筑面积约玉屏山庄案场在售酒店式公寓，小户型建筑面积约玉屏山庄案场在售酒店式公寓，小户型建筑面积约</div>
+    </div> -->
+    <!-- 楼盘简介 -->
+    <!-- <div class="project-dynamic">
+        <h3 class="dynamic-title">楼盘简介</h3>
+        <div class="jianjie-detail">
+            本项目位于城南独松关路468号，紧邻环灵峰山度假区和安吉竹博园，北靠浒溪河景观带，依山伴水，
+            浒溪河两边规划为城市次中心，有港中旅商业综合体、美颂商业
+            场等项目聚集开发，打造安吉富人居住区，灵峰山山形形象一把坐北朝南的太师椅，旁有灵峰寺院
+            保佑世界佑世界佑世界太平嘻嘻嘻嘻嘻monkeykggod dog godmonkeykggod dog godmonkeykggod dog god
+            monkeykggod dog godmonkeykggod dog godmonkeykggod dog godmonkeykggod dog godmonkeykggod dog god
+        </div>
+        <button class="showmore" i='1'>更多简介</button>
+    </div> -->
+    <!-- 主力户型 -->
+    <!-- <div class="main-type">
+            <h3 class="main-type-title">主力户型</h3>
+            <div class="swiper-container2">
+                    <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="http://placehold.it/80x80" alt="">
+                                <div class="type-condition">
+                                    <span class="ting">3房两厅一卫</span>
+                                    <span class="sou">在售</span>
+                                </div>
+                                <div class="square">90平</div>
+                                <div class="price">200万起</div>
+                            </div>
+                            <div class="swiper-slide">
+                                    <img src="http://placehold.it/80x80" alt="">
+                                    <div class="type-condition">
+                                        <span class="ting">3房两厅一卫</span>
+                                        <span class="sou">在售</span>
+                                    </div>
+                                    <div class="square">90平</div>
+                                    <div class="price">200万起</div>
+                            </div>
+                            <div class="swiper-slide">
+                                    <img src="http://placehold.it/80x80" alt="">
+                                    <div class="type-condition">
+                                        <span class="ting">3房两厅一卫</span>
+                                        <span class="sou">在售</span>
+                                    </div>
+                                    <div class="square">90平</div>
+                                    <div class="price">200万起</div>
+                            </div>
+                            <div class="swiper-slide">
+                                    <img src="http://placehold.it/80x80" alt="">
+                                    <div class="type-condition">
+                                        <span class="ting">3房两厅一卫</span>
+                                        <span class="sou">在售</span>
+                                    </div>
+                                    <div class="square">90平</div>
+                                    <div class="price">200万起</div>
+                            </div>
+                    </div>
+            </div>     
+    </div> -->
+    <!-- <div class="location">
+        <h3 class="dynamic-title">位置及周边</h3>
+        <div id=map></div>
+        <div class="traffic">
+            <div class="traffic-tabs">
+                <div class="tab-item on">交通</div>
+                <div class="tab-item">医疗</div>
+                <div class="tab-item">教育</div>
+                <div class="tab-item">购物</div>
+            </div>
+            <div class="traffic-details">
+                <div class="details-wrapper">
+                    <div class="detail">123路</div>
+                    <div class="distance">600M</div>
+                </div> 
+            </div>
+        </div> 
+    </div> -->
+   <script>
+        if(getOS()=='ios'){
+            //    ios
+            } 
+            if(getOS()=='android'){
+            // android   
+          
+            $('.top-title-pro').css('paddingTop',0)
+            }
+       $(function(){
+        //    const id='250dd6ec77ba40289e94edc7c2cbe437';
+        //   const serverId='435c87a1504f4d4ca3ac482fb7b6dfdb';
+        const id=location.href.split('id=')[1].slice(0,32); 
+       const serverId=location.href.split('serverId=')[1].slice(0,32);
+
+
+    console.log()
+           $.ajax({
+               method:'get',
+               url:'https://www.jingfuapp.com/preapp/proProject/readeProjectInfo',
+                // url:'http://192.168.0.133:8099/proProject/readeProjectInfo',
+               data:{'id':id,'serverId':serverId},
+               success:(response)=>{
+                   console.dir(response);
+                   if(response.code==200){
+                       $('body').append(`
+    <div class='pro-banner'>
+        <img src="${response.data.picCollect[0].url}" alt="">
+    </div>
+    <div class='pro-desc'>
+        <div class="pro-desc-title">
+            <div class='pro-desc-title-name'>${response.data.name}</div>
+            <div class="averagePrice">${(response.data.totalPrice=='' || response.data.totalPrice==undefined )?('均价：'+response.data.averagePrice) :('')}</div>
+        </div>
+        <div class="pro-desc-tage">
+           ${showTag(response.data.tage)}
+        </div>
+        <div class="totalcount">
+            ${(response.data.totalPrice=='' || response.data.totalPrice==undefined )? ('') :('总价：'+response.data.totalPrice)}
+        </div>
+        <div class="pro-desc-address">
+            <span class="pro-desc-address-left">地址:</span>
+            <span class="pro-desc-address-right">${response.data.address}</span>
+        </div>
+        <div class="pro-desc-address last">
+            <span class="pro-desc-address-left">电话:</span>
+            <span class="pro-desc-address-right">${response.data.chargeMan} &nbsp ${response.data.telphone}</span>
+        </div>
+    </div>
+    <div class="project-dynamic">
+        <h3 class="dynamic-title">楼盘动态</h3>
+        <div class="dynamic-detail">${response.data.dynamic}</div>
+    </div>
+    <div class="project-dynamic">
+        <h3 class="dynamic-title">楼盘简介</h3>
+        <div class="jianjie-detail">
+            ${response.data.outlining}
+        </div>
+        <button class="showmore" i='1' onclick="showmore(this)">更多简介</button>
+    </div>
+    <div class="main-type">
+            <h3 class="main-type-title">主力户型</h3>
+            <div class="swiper-container2">
+                    <div class="swiper-wrapper">
+                        ${maintype(response.data.projectPictures)}  
+                    </div>
+            </div>     
+    </div>
+    <div class="location">
+        <h3 class="dynamic-title">位置及周边</h3>
+        <div id=map></div>
+        <div class="traffic">
+            <div class="traffic-tabs">
+                <div class="tab-item on" onclick='tabchange(this)'>交通</div>
+                <div class="tab-item" onclick='tabchange(this)'>医疗</div>
+                <div class="tab-item" onclick='tabchange(this)'>教育</div>
+                <div class="tab-item" onclick='tabchange(this)'>购物</div>
+            </div>
+            <div class="traffic-details on">
+                <div class="details-wrapper">
+                    ${traffic(response.data.traffics)}
+                </div>
+            </div>
+            <div class="traffic-details">
+                <div class="details-wrapper">
+                    ${traffic(response.data.hospitals)}
+                </div>
+            </div>
+            <div class="traffic-details">
+                <div class="details-wrapper">
+                    ${traffic(response.data.educations)}
+                </div>
+            </div>
+            <div class="traffic-details">
+                <div class="details-wrapper">
+                    ${traffic(response.data.shops)}
+                </div>
+            </div>
+        </div> 
+    </div>
+                       `)
+                   }else{
+                       alert(response.msg)
+                   }
+                      //    swiper滑动设置
+      
+  //或者 virtual: true,
+        var swiper = new Swiper('.swiper-container2',{
+                 slidesPerView:2.5,   //页面分组显示，这里显示为3组
+                spaceBetween:15 ,  //slide间隙
+                   // 如果需要滚动条
+            });
+            var Lnglat=response.data.lnglat.split(',')
+            var map = new AMap.Map('map', {
+            resizeEnable: true,
+            zoomEnable:true,
+            dragEnable: true,
+            keyboardEnable: true,
+            doubleClickZoom: true,
+            zoom: 15,
+            center:Lnglat
+        });
+        // 实例化点标记
+        addMarker(Lnglat);
+        function addMarker(obj) {
+            marker = new AMap.Marker({
+                icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                position: obj
+            });
+            marker.setMap(map);
+        }
+
+        // function updateMarker() {
+        //     // 自定义点标记内容
+        //     var markerContent = document.createElement("div");
+
+        //     // 点标记中的图标
+        //     var markerImg = document.createElement("img");
+        //     markerImg.className = "markerlnglat";
+        //     markerImg.src = "https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png";
+        //     markerContent.appendChild(markerImg);
+
+        //     // 点标记中的文本
+        //     var markerSpan = document.createElement("span");
+        //     markerSpan.className = 'marker';
+        //     markerSpan.innerHTML = "Hi，我换新装备啦！";
+        //     markerContent.appendChild(markerSpan);
+
+        //     marker.setContent(markerContent); //更新点标记内容
+        //     marker.setPosition([120.076062,30.308035]); //更新点标记位置
+        // }
+               }
+           })
+       })
+ 
+
+     
+   </script>
+   <script>
+        // var map = new AMap.Map('map', {
+        //     resizeEnable: true,
+        //     zoomEnable:true,
+        //     dragEnable: true,
+        //     keyboardEnable: true,
+        //     doubleClickZoom: true,
+        //     zoom: 15,
+        //     center: [120.076062,30.308035]
+        // });
+        // // 实例化点标记
+        // addMarker();
+        // // openInfo()
+        
+        //在指定位置打开信息窗体
+        function showTag(msg){
+            var array=[];
+            for(var i=0;i<msg.length;i++){
+                array.push('<span>'+msg[i]+'</span>')
+            }
+            return array.join(' ')
+        }
+        //查看更多点击切换
+        function showmore(obj){
+                if($(obj).attr('i')=='1'){//查看更多
+                    $(obj).attr('i','2');
+                    $(obj).text('收起更多');
+                    $('.jianjie-detail').css('display','block')
+                }else{
+                    $(obj).attr('i','1'); 
+                    $(obj).text('查看更多');
+                    $('.jianjie-detail').css('display','-webkit-box')
+                }
+        }
+        //主力户型
+        function maintype(obj){
+            var array=[];
+            for(var i=0;i<obj.length;i++){
+                array.push(`
+                <div class="swiper-slide">
+                    <img src="${obj[i].pictureIds}" alt="">
+                    <div class="type-condition">
+                        <span class="ting">${obj[i].room}房${obj[i]. living}厅${obj[i]. toilet}卫</span>
+                        <span class="sou"></span>
+                    </div>
+                        <div class="square">${obj[i].area}平</div>
+                        <div class="price">${obj[i].price}万</div>
+                </div>
+                `)
+            }
+            return array.join('')
+        }
+        // tab点击切换
+       function tabchange(obj){
+           $(obj).addClass('on').siblings().removeClass('on')
+           console.log($(obj).index())
+           console.log($('.traffic-details').length)
+           for(var i=0;i<$('.traffic-details').length;i++){
+               if(i==$(obj).index()){
+                $($('.traffic-details')[$(obj).index()]).addClass('on')
+               }else{
+                $($('.traffic-details')[i]).removeClass('on')
+               }
+           }
+            // $($('.traffic-details')[$(obj).index()]).show()
+       }
+       function traffic(obj){
+           var array=[];
+           for(var i=0;i<obj.length;i++){
+               array.push(`
+               <div>
+                    <div class="detail">${obj[i].split('距离：')[0]}</div>
+                    <div class="distance">${obj[i].split('距离：')[1]+'m'}</div>
+                </div>  
+               `)
+           }
+           return array.join('')
+       }
+    </script>
+</body>
+</html>
